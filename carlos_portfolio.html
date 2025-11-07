@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Sáez Calvo - Estadístico e Investigador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border: 5px solid rgba(255,255,255,0.3);
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            opacity: 0.95;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .location {
+            font-size: 1.1em;
+            opacity: 0.85;
+            margin-bottom: 30px;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+            padding: 15px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 1.05em;
+            transition: color 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        nav a.active {
+            color: #667eea;
+        }
+
+        nav a.active::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            min-height: 60vh;
+        }
+
+        .page {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #1a1a1a;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #4a4a4a;
+            max-width: 900px;
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .expertise-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 35px;
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expertise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .expertise-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .expertise-card:hover::before {
+            opacity: 0.95;
+        }
+
+        .expertise-card:hover h3,
+        .expertise-card:hover p {
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .expertise-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            transition: color 0.3s;
+        }
+
+        .expertise-card p {
+            color: #5a5a5a;
+            line-height: 1.7;
+            transition: color 0.3s;
+        }
+
+        .experience-timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .experience-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateX(10px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -39px;
+            top: 40px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.6em;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item .role {
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item p {
+            color: #5a5a5a;
+            line-height: 1.8;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .skill-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .skill-name {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            font-size: 1.1em;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-level {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .contact-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-intro {
+            font-size: 1.2em;
+            color: #4a4a4a;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1.1em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .expertise-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+
+            .experience-timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item::before {
+                left: -29px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="profile-image">CS</div>
+            <h1>Carlos Sáez Calvo</h1>
+            <p class="subtitle">Jefe de Área | Estadístico e Investigador</p>
+            <p class="location">📍 Madrid, España | 🔗 156 conexiones</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a data-page="about" class="nav-link active">Sobre mí</a></li>
+            <li><a data-page="expertise" class="nav-link">Especialización</a></li>
+            <li><a data-page="experience" class="nav-link">Experiencia</a></li>
+            <li><a data-page="skills" class="nav-link">Competencias</a></li>
+            <li><a data-page="contact" class="nav-link">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Página: Sobre mí -->
+        <div id="about" class="page active">
+            <h2>Sobre mí</h2>
+            <div class="about-content">
+                <p>Soy metodólogo de estadística oficial en el <strong>Instituto Nacional de Estadística (INE)</strong>, donde aplico técnicas avanzadas de análisis de datos para mejorar la calidad de las estadísticas oficiales españolas.</p>
+                <br>
+                <p>Mi trayectoria profesional combina la rigurosidad de la investigación matemática pura con la aplicación práctica de metodologías estadísticas de vanguardia. Me especializo en el análisis de series temporales, con énfasis en el ajuste estacional, y en la aplicación de técnicas de machine learning para optimizar procesos estadísticos.</p>
+                <br>
+                <p>Anteriormente, desarrollé mi carrera como investigador en matemática pura, centrado en geometría y topología, lo que me proporciona una base sólida en el pensamiento analítico y la resolución de problemas complejos.</p>
+            </div>
+        </div>
+
+        <!-- Página: Especialización -->
+        <div id="expertise" class="page">
+            <h2>Especialización</h2>
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <h3>📊 Análisis de Series Temporales</h3>
+                    <p>Experto en modelado, predicción y ajuste estacional de series temporales, aplicando metodologías avanzadas para identificar patrones y tendencias en datos longitudinales.</p>
+                </div>
+                <div class="expertise-card">
+                    <h3>🤖 Machine Learning</h3>
+                    <p>Aplicación de algoritmos de aprendizaje automático para mejorar la precisión y eficiencia de las estadísticas oficiales, incluyendo modelos predictivos y de clasificación.</p>
+                </div>
+                <div class="expertise-card">
+                    <h3>📐 Metodología Estadística</h3>
+                    <p>Desarrollo e implementación de metodologías estadísticas rigurosas que garantizan la calidad y fiabilidad de los indicadores económicos y sociales oficiales.</p>
+                </div>
+                <div class="expertise-card">
+                    <h3>🔬 Investigación Matemática</h3>
+                    <p>Sólida formación en matemática pura con experiencia en geometría y topología, proporcionando una perspectiva única en la resolución de problemas estadísticos complejos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página: Experiencia -->
+        <div id="experience" class="page">
+            <h2>Experiencia Profesional</h2>
+            <div class="experience-timeline">
+                <div class="timeline-item">
+                    <h3>Instituto Nacional de Estadística (INE)</h3>
+                    <div class="role">Jefe de Área | Estadístico Metodólogo</div>
+                    <p>Lidero proyectos de innovación metodológica en estadística oficial, con especial enfoque en el desarrollo de modelos de series temporales y la integración de técnicas de machine learning. Responsable del ajuste estacional de los principales indicadores económicos españoles y de la implementación de nuevas metodologías para mejorar la calidad de las estadísticas publicadas.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Investigación Académica</h3>
+                    <div class="role">Investigador en Matemática Pura</div>
+                    <p>Desarrollé investigación avanzada en geometría y topología, publicando trabajos en revistas especializadas y participando en conferencias internacionales. Esta experiencia fortaleció mi capacidad de análisis abstracto y resolución de problemas complejos, habilidades fundamentales en mi trabajo actual.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página: Competencias -->
+        <div id="skills" class="page">
+            <h2>Competencias Técnicas</h2>
+            <div class="skills-container">
+                <div class="skill-item">
+                    <div class="skill-name">Series Temporales</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 95%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Ajuste Estacional</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 95%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Machine Learning</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 90%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">R / Python</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 90%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Estadística Oficial</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 95%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Matemática Pura</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 85%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Análisis de Datos</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 92%"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">Modelización Estadística</div>
+                    <div class="skill-bar"><div class="skill-level" style="width: 93%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página: Contacto -->
+        <div id="contact" class="page">
+            <h2>Contacto</h2>
+            <div class="contact-content">
+                <p class="contact-intro">¿Interesado en colaborar o conocer más sobre mi trabajo en estadística oficial y análisis de series temporales? Me encantaría conectar contigo.</p>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/carlos-saez-calvo/" target="_blank" class="contact-btn">LinkedIn</a>
+                    <a href="mailto:carlos.saez.calvo@ine.es" class="contact-btn">Enviar Email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation system
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and pages
+                navLinks.forEach(l => l.classList.remove('active'));
+                pages.forEach(p => p.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Show corresponding page
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
